@@ -65,7 +65,7 @@ class BlogController extends Controller implements SystemController
         
         $articleLang = $em->getRepository('MajesBlogBundle:ArticleLang')->findOneBy(array('category' => $categoryLang->getId(), 'locale' => $this->_lang, 'isActive' => 1, 'deleted' => 0));
 
-        if(!$blog->getIsActive() || is_null($categoryLang) || is_null($articleLang)  || ( !is_null($categoryLang) && ( !$categoryLang->getIsActive() || !$categoryLang->getCategory()->getIsActive() ) || ( !is_null($articleLang) && ( !$articleLang->getIsActive() || !$articleLang->getArticle()->getIsActive() ) ) )
+        if(!$blog->getIsActive() || is_null($categoryLang) || is_null($articleLang)  || ( !is_null($categoryLang) && ( !$categoryLang->getIsActive() || !$categoryLang->getCategory()->getIsActive() ) || ( !is_null($articleLang) && ( !$articleLang->getIsActive() || !$articleLang->getArticle()->getIsActive() ) ) ) )
             throw new \Exception(404);
 
 
