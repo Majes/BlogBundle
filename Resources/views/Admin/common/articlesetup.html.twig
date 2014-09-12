@@ -1,0 +1,121 @@
+
+            {% if article is not null %}
+            {% include ['MajesBlogBundle:Admin:parts/actions.html.twig'] with {'category' : false} %}
+            {% endif %}
+            
+            <div class="widget-container fluid-height clearfix">
+                
+                {% if edit_article == 1 %}
+                <div class="heading tabs">
+                    <i class="icon-save"></i> <em>{{pageSubTitle}}</em> 
+                    <ul class="nav nav-tabs pull-right" data-tabs="tabs" id="tabs">
+                        {% if article is not null %}<li class="active">
+                            <a data-toggle="tab" href="#cmsEditing">
+                                <i class="icon-edit"></i>
+                                <span>{% trans %}Content{% endtrans %}  </span>
+                            </a>
+                        </li>{% endif %}
+                        <li{% if article is null %} class="active"{% endif %}>
+                            <a data-toggle="tab" href="#tab2">
+                                <i class="icon-cog"></i>
+                                <span>{% trans %}Setup{% endtrans %}  </span>
+                            </a>
+                        </li>
+                        {% if article is not null %}<li>
+                            <a data-toggle="tab" href="#tab3">
+                                <i class="icon-thumbs-up-alt"></i>
+                                <span>{% trans %}Social{% endtrans %}  </span>
+                            </a>
+                        </li>{% endif %}
+               
+                    </ul>
+                </div>
+                    
+                <div class="tab-content padded" id="my-tab-content">
+                    {% if article is not null %}<div class="tab-pane active" id="cmsEditing">
+                    
+
+                    <div class="row">
+                        <div class="col-md-12">
+                               
+                            <div class="widget-container fluid-height">
+                                <div class="heading">
+                                    <i class="icon-align-left"></i> {{block.title}}
+        
+                                    <a class="editArticle icon-edit pull-right" href="{{ path('_blog_article_form') }}" data-blog="{{blog.id}}" data-article="{{article}}"></a>
+                                    
+                                </div>
+                                <div class="widget-content">
+                                {% for name,attribute in attributes %}
+                                        {% if attribute.value is not empty %}
+                                            {{ include('MajesBlogBundle:Admin:datatype/' ~ attribute.attribute.ref  ~ '.html.twig') }}
+                                        {% endif %}
+                                {% endfor %}
+                                
+                                
+                                    <div style="clear: both"></div>
+                                </div>
+                                 <span class="updated pull-right"><small>{% trans %}Updated on{% endtrans %} {{ block.update_date|date("d/m/Y") }} at {{ block.update_date|date("H:i:s") }}</small></span>
+                            </div>
+
+                                    
+                        </div>
+
+                    </div>
+                                                
+                    </div>{% endif %}
+                    <div class="tab-pane{% if article is null %} active{% endif %}" id="tab2">
+                        {% form_theme form 'MajesCoreBundle:Form:fields.html.twig' %}
+                        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+                        <div class="col-md-2">
+                            
+                        </div>
+                        <div class="col-md-8">
+                            
+                            <div class="widget-content padded">
+                                
+
+                                {{ form_errors(form) }}
+                                {{ form_widget(form.lang) }}
+                                {{ form_widget(form) }}
+                                
+                                <div class="form-actions col-lg-offset-3 col-lg-9">
+                                    <input type="submit" class="btn btn-primary" value="{% trans %}Submit{% endtrans %}" />
+                                    <a href="{{ path('_admin_users') }}" class="btn btn-default-outline">{% trans %}Cancel{% endtrans %}</a>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+
+                    {% if article is not null %}<div class="tab-pane" id="tab3">
+                        {% form_theme form_social 'MajesCoreBundle:Form:fields.html.twig' %}
+                        {{ form_start(form_social, { 'attr': {'class': 'form-horizontal'} }) }}
+                        <div class="col-md-2">
+                            
+                        </div>
+                        <div class="col-md-8">
+                            
+                            <div class="widget-content padded">
+                                
+
+                                {{ form_errors(form_social) }}
+                                {{ form_widget(form_social) }}
+                                
+                                <div class="form-actions col-lg-offset-3 col-lg-9">
+                                    <input type="submit" class="btn btn-primary" value="{% trans %}Submit{% endtrans %}" />
+                                    <a href="{{ path('_admin_users') }}" class="btn btn-default-outline">{% trans %}Cancel{% endtrans %}</a>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                    </div>{% endif %}
+                </div>
+                {% endif %}
+                
+            </div>
+        </div>
+
+

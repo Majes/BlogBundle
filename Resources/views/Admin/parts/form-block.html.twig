@@ -1,0 +1,28 @@
+<div class="modal-header">
+	<button aria-hidden="true" class="close" data-dismiss="modal" type="button">×</button>
+	<h4 class="modal-title">Edit Article : "<em><strong>{{ article.title }}</strong></em>"</h4>
+</div>
+<form action="{{ path('_blog_article_content') }}" method="post" class="form-horizontal" enctype="multipart/form-data" id="editPageBlockForm">
+<input type="hidden" name="lang" value="{{ lang }}"/>
+<input type="hidden" name="id" value="{{ article.id }}"/>
+<input type="hidden" name="blog" value="{{ blog.id }}"/>
+
+<div class="modal-body">
+
+    {% for name,attribute in attributes %}
+    	<blockquote class="">
+    	<input type="hidden" name="attributes[{{name}}][id]" value="{{attribute.attribute.id}}"/>
+    	<input type="hidden" name="attributes[{{name}}][ref]" value="{{attribute.attribute.ref}}"/>
+		{{ include(
+    	    'MajesBlogBundle:Admin:datatype/form/' ~ attribute.attribute.ref  ~ '.html.twig'
+    		) }}
+    	</blockquote>
+	{% endfor %}
+	
+</div>
+
+<div class="modal-footer">
+	<input class="btn btn-primary" type="submit" value="Save"/>
+	<button class="btn btn-default-outline" data-dismiss="modal" type="button">Close</button>
+</div>
+</form>

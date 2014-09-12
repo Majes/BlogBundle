@@ -1,0 +1,6 @@
+<div class="form-group">
+    <label class="control-label col-lg-3">{{name|capitalize}}</label>
+    <div class="col-lg-9">
+        <input class="form-control" placeholder="Text" type="text" name="attributes_{{name}}" value="{% if attribute.value %}{{attribute.value}}{% endif %}"/>
+    </div>
+</div>

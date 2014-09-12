@@ -1,0 +1,86 @@
+<div class="col-lg-3" id="cmsTree">
+    <div class="widget-container fluid-height">
+        <div class="widget-content">
+            <div class="panel-group" id="accordion">
+
+                {% for key, blog in blogs %}
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <a class="accordion-toggle{% if loop.first %}{% else %} collapsed{% endif %}" data-parent="#accordion" data-toggle="collapse" href="#collapseType{{blog.id}}"><div class="caret pull-right"></div>{{ blog.host.title }}</a>
+                        </div>
+                    </div>
+                    <div class="panel-collapse{% if loop.first %}{% else %} collapse{% endif %}" id="collapseType{{blog.id}}">
+                        <div class="panel-body">
+                            <h4>Articles</h4>
+                            <a href="{{ path(url.edit, {'blog' : blog.id}) }}" class="btn btn-primary-outline"><i class="icon-edit"></i>Edit</a>
+                        </div>
+                        <div class="panel-body">
+                            <h4>Blog</h4>
+                            <a href="{{ path(url.edit_categ, {'blog' : blog.id}) }}" class="btn btn-primary-outline"><i class="icon-edit"></i>Edit Categories</a>
+                            <a href="{{ path(url.setup, {'blog' : blog.id}) }}" class="btn btn-default"><i class="icon-cog"></i>Setup</a>
+                        </div>
+                    </div>
+                </div>
+                {# <form action="{{ path('_admin_trashs') }}" method="get" id="formFilter">
+                    <input type="hidden" name="page" value="{{ page }}"/>
+                    <div class="col-lg-3">
+                        <div class="widget-container fluid-height">
+                            <div class="widget-content">
+                                <div class="panel-group" id="accordion">
+                                    <div class="panel">
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                <a class="accordion-toggle" data-parent="#accordion" data-toggle="collapse" href="#collapseBundle"><div class="caret pull-right"></div>{% trans %}Filters{% endtrans %}</a>
+                                            </div>
+                                        </div>
+                                        <div class="panel-collapse collapse in" id="collapseBundle">
+                                            <div class="panel-body">
+                                                <label class="checkbox"><input {% if '' in chosen %}checked="checked"{% endif %} name="types[]" type="checkbox" value=""><span>{% trans %}All{% endtrans %}</span></label>
+
+                                                {% for choice in choices %}
+                                                <label class="checkbox"><input {% if choice in chosen %}checked="checked"{% endif %} name="types[]" type="checkbox" value="{{choice}}"><span>{{choice }}</span></label>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel">
+                                        <div class="panel-collapse collapse in">
+                                            <div class="panel-body">
+                                                <button class="btn btn-default pull-right" onclick="$('input[name=page]').val('1'); $('#formFilter').submit();"><i class="icon-search"></i>{% trans %}Filter{% endtrans %}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                </form> #}
+                
+
+                {% endfor %}
+                
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+     $('.menu').bind(
+         'click',
+         function(e) {
+             var self = $(e.target);
+             $(".contextMenu.show").removeClass('show');
+     
+             if(self.hasClass('on')){
+                 self.removeClass('on');    
+             }else{
+                 $("a.menu.on").removeClass('on');
+                 self.addClass('on');
+                 $(e.target).next().addClass('show');
+             }
+         }
+     );
+     
+    });
+</script>

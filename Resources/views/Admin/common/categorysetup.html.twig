@@ -1,0 +1,54 @@
+
+            {% if article is not null %}
+
+                {% include ['MajesBlogBundle:Admin:parts/actions.html.twig'] with {'category' : true} %}
+            {% endif %}
+            
+            <div class="widget-container fluid-height clearfix">
+                
+                {% if edit_categ == 1 %}
+                <div class="heading tabs">
+                    <i class="icon-save"></i> <em>{{pageSubTitle}}</em> 
+                    <ul class="nav nav-tabs pull-right" data-tabs="tabs" id="tabs">
+                        <li class="active">
+                            <a data-toggle="tab" href="#tab2">
+                                <i class="icon-cog"></i>
+                                <span>{% trans %}Setup{% endtrans %}  </span>
+                            </a>
+                        </li> 
+                    </ul>
+                </div>
+                    
+                <div class="tab-content padded" id="my-tab-content">
+                    
+                    <div class="tab-pane active" id="tab2">
+                        {% form_theme form 'MajesCoreBundle:Form:fields.html.twig' %}
+                        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+                        <div class="col-md-2">
+                            
+                        </div>
+                        <div class="col-md-8">
+                            
+                            <div class="widget-content padded">
+                                
+
+                                {{ form_errors(form) }}
+                                {{ form_widget(form.lang) }}
+                                {{ form_widget(form) }}
+                                
+                                <div class="form-actions col-lg-offset-3 col-lg-9">
+                                    <input type="submit" class="btn btn-primary" value="{% trans %}Submit{% endtrans %}" />
+                                    <a href="{{ path('_admin_users') }}" class="btn btn-default-outline">{% trans %}Cancel{% endtrans %}</a>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+                {% endif %}
+                
+            </div>
+        </div>
+
+

@@ -1,0 +1,6 @@
+services:
+    majesblog.twig.blog_extension:
+        class: Majes\BlogBundle\Twig\BlogExtension
+        arguments: ["@doctrine.orm.entity_manager", "@router", "@service_container"]
+        tags:
+            - { name: twig.extension }

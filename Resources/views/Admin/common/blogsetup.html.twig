@@ -1,0 +1,39 @@
+<div class="heading tabs">
+	<i class="icon-save"></i> <em>{{pageSubTitle}}</em> 
+	<ul class="nav nav-tabs pull-right" data-tabs="tabs" id="tabs">
+		<li{% if blog is not null %} class="active"{% endif %}>
+		<a data-toggle="tab" href="#tab2">
+			<i class="icon-cog"></i>
+			<span>{% trans %}Setup{% endtrans %}  </span>
+		</a>
+	</li>
+</ul>
+</div>
+
+<div class="tab-content padded" id="my-tab-content">
+	<div class="tab-pane{% if blog is not null %} active{% endif %}" id="tab2">
+		{% form_theme form 'MajesCoreBundle:Form:fields.html.twig' %}
+		{{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+		<div class="col-md-3">
+			
+		</div>
+		<div class="col-md-6">
+			
+			<div class="widget-content padded">
+				
+				{{ form_errors(form) }}
+				{% if form.lang is defined %}
+				{{ form_widget(form.lang) }}
+				{% endif %}
+				{{ form_widget(form) }}
+				
+				<div class="form-actions col-lg-offset-3 col-lg-9">
+					<input type="submit" class="btn btn-primary" value="{% trans %}Submit{% endtrans %}" />
+					<a href="{{ path('_admin_users') }}" class="btn btn-default-outline">{% trans %}Cancel{% endtrans %}</a>
+				</div>
+				
+			</div>
+		</div>
+		{{ form_end(form) }}
+	</div>
+</div>
