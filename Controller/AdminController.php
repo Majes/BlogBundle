@@ -59,10 +59,11 @@ class AdminController extends Controller implements SystemController
         $articles = $em->getRepository('MajesBlogBundle:Article')->findBy(array('blog' => $blog));
 
         $filter = array();
+
         foreach($articles as $article){
             $filter[]=$article->getId();
         }
-        if(!is_null($articles)){
+        if(!is_null($articles) && !empty($articles)){
             $articles = $em->getRepository('MajesBlogBundle:ArticleLang')->findBy(array('article' => $filter, 'locale' => $this->_lang));
         }else{
             $articles=array();
@@ -88,7 +89,7 @@ class AdminController extends Controller implements SystemController
             'lang' => 'fr',
             'form_role' => null,
             'message' => 'Are you sure you want to delete this article ?',
-            'urls' => array('params' => array('blog'=> $blog->getId(), 'id' => $article->getId()),
+            'urls' => array('params' => array('blog'=> $blog->getId()),
                             'add' => '_blog_article_edit',
                             'edit' => '_blog_article_edit',
                             'delete' => '_blog_article_delete')

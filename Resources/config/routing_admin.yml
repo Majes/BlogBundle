@@ -1,0 +1,39 @@
+_blog_content:
+    path:     /content
+    defaults: { _controller: MajesBlogBundle:Admin:content }
+
+_blog_content_edit:
+    path:     /content/edit/{blog}
+    defaults: { _controller: MajesBlogBundle:Admin:contentList }
+
+_blog_setup:
+    path:     /content/setup/{blog}
+    defaults: { _controller: MajesBlogBundle:Admin:setup }
+
+_blog_article_edit:
+    path:     /article/setup/edit/{blog}/{id}
+    defaults: { _controller: MajesBlogBundle:Admin:articleEdit, blog : null, id :null }
+
+_blog_article_delete:
+    path:     /article/delete/{blog}/{id}
+    defaults: { _controller: MajesBlogBundle:Admin:articleEdit, blog : null, id :null }
+
+_blog_article_social_edit:
+    path:     /article/setup/social/edit/{blog}/{id}
+    defaults: { _controller: MajesBlogBundle:Admin:articleSocialEdit, blog : null, id :null }
+
+_blog_article_form:
+    path:     /article/content/form
+    defaults: { _controller: MajesBlogBundle:Admin:articleContentForm }
+
+_blog_article_content:
+    path:     /article/content/edit
+    defaults: { _controller: MajesBlogBundle:Admin:articleContentEdit }
+
+_blog_category_edit:
+    path:     /category/edit/{blog}/{id}
+    defaults: { _controller: MajesBlogBundle:Admin:categoryEdit, blog : null, id :null }
+
+_blog_categories_edit:
+    path:     /categories/{blog}
+    defaults: { _controller: MajesBlogBundle:Admin:categories }
