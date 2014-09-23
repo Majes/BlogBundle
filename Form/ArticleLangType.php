@@ -17,8 +17,11 @@ class ArticleLangType extends AbstractType
     $builder->add('url', 'text', array(
             'required' => true,
             'label' => 'Url of your page'))
-      ->add('category', 'entity', array(
+      
+      ->add('categories', 'entity', array(
         'required' => true,
+        'multiple' => true,
+        'select2' => true,
         'class' => 'MajesBlogBundle:CategoryLang',
         'query_builder' => function(EntityRepository $er) use ($locale) {
             return $er->createQueryBuilder('u')

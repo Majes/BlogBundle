@@ -20,6 +20,10 @@ class CategoryLangType extends AbstractType
             'required' => true,
             'label' => 'Url of the category'))
 
+      ->add('presentation', 'textarea', array(
+            'required' => true,
+            'label' => 'Presentation of your Category'))
+
       ->add('enable_comments', 'checkbox', array(
         'required' => false,
         'label' => 'Enable Comments in this language'))

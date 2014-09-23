@@ -101,7 +101,8 @@ class AdminController extends Controller implements SystemController
      *
      */
     public function articleEditAction($blog, $id)
-    {   
+    { 
+
         $request = $this->getRequest();
         $accessor = PropertyAccess::createPropertyAccessor();
         $em = $this->getDoctrine()->getManager();
@@ -274,7 +275,6 @@ class AdminController extends Controller implements SystemController
         $accessor = PropertyAccess::createPropertyAccessor();
         $em = $this->getDoctrine()->getManager();
         $session = $this->get('session');
-
         if($request->getMethod() == 'POST'){
             $articleLang = $em->getRepository('MajesBlogBundle:ArticleLang')->findOneBy(array('id' => $request->get('id'), 'locale' => $request->get('lang')));
             $attributesSetted=$session->get('menu')['cms']['submenu']['blog']['attributes'];
@@ -466,7 +466,7 @@ class AdminController extends Controller implements SystemController
                 $em->persist($category);
                 $em->flush();
 
-                //return $this->redirect($this->generateUrl('_blog_category_edit', array('blog' => $blog->getId(), 'id' => $category->getId())));
+                return $this->redirect($this->generateUrl('_blog_category_edit', array('blog' => $blog->getId(), 'id' => $category->getId())));
             }
         }
 
@@ -506,7 +506,7 @@ class AdminController extends Controller implements SystemController
         foreach($categories as $category){
             $filter[]=$category->getId();
         }
-        if(!is_null($categories)){
+        if(!is_null($categories) && !empty($filter)){
             $categories = $em->getRepository('MajesBlogBundle:CategoryLang')->findBy(array('category' => $filter, 'locale' => $this->_lang));
         }else{
             $categories=array();
@@ -533,7 +533,7 @@ class AdminController extends Controller implements SystemController
             'lang' => 'fr',
             'form_role' => null,
             'message' => 'Are you sure you want to delete this category ?',
-            'urls' => array('params' => array('blog'=> $blog->getId(), 'id' => $category->getId()),
+            'urls' => array('params' => array('blog'=> $blog->getId()),
                             'add' => '_blog_category_edit',
                             'edit' => '_blog_category_edit',
                             'delete' => '_blog_article_delete')

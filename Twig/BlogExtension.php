@@ -21,7 +21,9 @@ class BlogExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFunction('articleHasTranslation', array($this, 'articleHasTranslation')),
-            new \Twig_SimpleFunction('categHasTranslation', array($this, 'categHasTranslation'))
+            new \Twig_SimpleFunction('categHasTranslation', array($this, 'categHasTranslation')),
+            new \Twig_SimpleFunction('getLastArticles', array($this, 'getLastArticles'))
+
         );
     }
 
@@ -60,6 +62,19 @@ class BlogExtension extends \Twig_Extension
         }
 
         return false;
+
+    }
+
+    public function getLastArticles($lang, $limit = null, $offset = null){
+        
+        $articles = $this->_em->getRepository('MajesBlogBundle:ArticleLang')
+            ->findBy( array('locale' => $lang), // Critere
+                      array('date' => 'desc'),        // Tri
+                      $limit,                              // Limite
+                      $offset                               // Offset
+                    );
+
+        return $articles;
 
     }
 

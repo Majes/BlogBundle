@@ -43,7 +43,7 @@
         			<td class="actions">
         			  	<div class="action-buttons">
         			  	  {% if config.object.hasPreview %}<a class="table-actions" href=""><i class="icon-eye-open"></i></a>{% endif %}
-                    {% set params = {'blog' : blog.id} %}
+                    {% set params = {'blog' : blog.id, 'id' : data.id} %}
                     {% if urls.params is defined %}{% for key, param in urls.params %}{% set params = params|merge({ (key) : param }) %}{% endfor %}{% endif %}
         			  	 	{% if urls.edit is defined %}<a href="{{ path(urls.edit, params) }}" class="table-actions"><i class="icon-pencil"></i></a>{% endif %}
         			  	 	{% if urls.delete is defined %}{% if data.isSystem is defined %}{% if not data.isSystem %}<a href="{{ path(urls.delete, params) }}" class="table-actions" onclick="return CoreAdmin.Common.confirmDelete('{{ message|trans }}')"><i class="icon-trash"></i></a>{% endif %}{% else %}<a href="{{ path(urls.delete, params) }}" class="table-actions" onclick="return CoreAdmin.Common.confirmDelete('{{ message|trans }}')"><i class="icon-trash"></i></a>{% endif %}{% endif %}

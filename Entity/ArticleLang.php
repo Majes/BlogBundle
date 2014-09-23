@@ -5,7 +5,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Majes\CoreBundle\Annotation\DataTable;
 use Majes\MediaBundle\Entity\Media;
-use Majes\BlogBundle\Entity\CategoryLAng;
+use Majes\BlogBundle\Entity\CategoryLang;
+use Doctrine\Common\Collections\ArrayCollection;
+
 
 
 /**
@@ -116,11 +118,14 @@ class ArticleLang{
      */
     private $metaImage;
 
-     /**
-     * @ORM\ManyToOne(targetEntity="Majes\BlogBundle\Entity\CategoryLang")
-     * @ORM\JoinColumn(name="category_id", referencedColumnName="id", nullable=false)
+    /**
+     * @ORM\ManyToMany(targetEntity="CategoryLang", inversedBy="articles")
+     * @ORM\JoinTable(name="blog_category_article",
+     *      joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id")}
+     * )
      */
-    private $category;
+    private $categories;
     
 
 
@@ -132,6 +137,8 @@ class ArticleLang{
         $this->createDate = new \DateTime();
         $this->date = new \DateTime();
         $this->langs = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
+
         $this->contentUpdateDate = new \DateTime();
     }
 
@@ -541,29 +548,47 @@ class ArticleLang{
         return $this;
     }
 
-
-
     /**
-     * Gets the value of category.
-     *
-     * @return mixed
+     * @inheritDoc
      */
-    public function getCategory()
+    public function getCategories()
     {
-        return $this->category;
+        return $this->categories->toArray();
     }
 
     /**
-     * Sets the value of category.
-     *
-     * @param mixed $category the category
-     *
-     * @return self
+     * @inheritDoc
      */
-    public function setCategory(CategoryLang $category)
+    public function addCategory(\Majes\BlogBundle\Entity\CategoryLang $category)
     {
-        $this->category = $category;
+        \Doctrine\Common\Util\Debug::dump($category);
+        return $this->categories[] = $category;
+    }
 
-        return $this;
+    public function hasCategory($category_id){
+        $categories = $this->getCategories();
+
+        $categories_array = array();
+        foreach($categories as $category){
+            if(!$category->getDeleted()){
+                $categories_array[] = $category->getId();
+            }
+        }
+
+        if(in_array($category_id, $categories_array)) return true;
+        return false;
+    }
+
+    public function removeCategory(\Majes\BlogBundle\Entity\CategoryLang $category)
+    {
+        return $this->roles->removeElement($role);
+    }
+
+    public function removeCategories()
+    {
+        foreach($this->roles as $role)
+            $this->roles->removeElement($role);
+
+        return;
     }
 }

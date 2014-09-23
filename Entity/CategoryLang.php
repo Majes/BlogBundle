@@ -68,6 +68,17 @@ class CategoryLang{
      */
     private $locale;
 
+    /**
+     * @ORM\Column(name="presentation", type="text", nullable=true)
+     */
+    private $presentation;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="ArticleLang", mappedBy="categories")
+     * 
+     */
+    private $articles;
+
 
 
 
@@ -313,6 +324,40 @@ class CategoryLang{
     public function setLocale($locale)
     {
         $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getArticles()
+    {
+        return $this->articles->toArray();
+    }
+
+
+
+    /**
+     * Gets the value of presentation.
+     *
+     * @return mixed
+     */
+    public function getPresentation()
+    {
+        return $this->presentation;
+    }
+
+    /**
+     * Sets the value of presentation.
+     *
+     * @param mixed $presentation the presentation
+     *
+     * @return self
+     */
+    public function setPresentation($presentation)
+    {
+        $this->presentation = $presentation;
 
         return $this;
     }
