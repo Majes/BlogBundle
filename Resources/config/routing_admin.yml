@@ -16,7 +16,7 @@ _blog_article_edit:
 
 _blog_article_delete:
     path:     /article/delete/{blog}/{id}
-    defaults: { _controller: MajesBlogBundle:Admin:articleEdit, blog : null, id :null }
+    defaults: { _controller: MajesBlogBundle:Admin:articleDelete, blog : null, id :null }
 
 _blog_article_social_edit:
     path:     /article/setup/social/edit/{blog}/{id}

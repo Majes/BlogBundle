@@ -64,7 +64,7 @@ class AdminController extends Controller implements SystemController
             $filter[]=$article->getId();
         }
         if(!is_null($articles) && !empty($articles)){
-            $articles = $em->getRepository('MajesBlogBundle:ArticleLang')->findBy(array('article' => $filter, 'locale' => $this->_lang));
+            $articles = $em->getRepository('MajesBlogBundle:ArticleLang')->findBy(array('article' => $filter, 'locale' => $this->_lang, 'deleted' => false));
         }else{
             $articles=array();
         }
@@ -217,6 +217,30 @@ class AdminController extends Controller implements SystemController
             'form_social' => $formArticleSocial,
             'urls' => array('add' => '_blog_article_edit')
             ));
+    }
+
+    /**
+     * @Secure(roles="ROLE_CMS_CONTENT,ROLE_SUPERADMIN")
+     */
+    public function articleDeleteAction($blog, $id){
+
+        $request = $this->getRequest();
+
+        $em = $this->getDoctrine()->getManager();
+
+        //Get blog
+        $blog = $em->getRepository('MajesBlogBundle:Blog')
+            ->findOneById($blog);
+
+        $article = $em->getRepository('MajesBlogBundle:ArticleLang')
+            ->findOneById($id);
+
+        $article->setDeleted(true);
+
+        $em->persist($article);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('_blog_content_edit', array('blog' => $blog->getId())));
     }
 
     /**
