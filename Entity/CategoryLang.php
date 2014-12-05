@@ -75,7 +75,7 @@ class CategoryLang{
 
     /**
      * @ORM\ManyToMany(targetEntity="ArticleLang", mappedBy="categories")
-     * 
+     * @ORM\OrderBy({"date" = "DESC"})
      */
     private $articles;
 

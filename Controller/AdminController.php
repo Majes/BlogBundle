@@ -339,7 +339,8 @@ class AdminController extends Controller implements SystemController
                         $value=$request->get('attributes_'.$key);
                         break;
                 }
-                $accessor->setValue($articleLang, $key, $value);
+                if(!is_null($value))
+                    $accessor->setValue($articleLang, $key, $value);
 
             }
 

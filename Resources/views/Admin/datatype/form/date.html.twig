@@ -1,11 +1,11 @@
 <div class="form-group">
     <label class="control-label col-lg-3">{{name|capitalize}}</label>
     <div class="col-lg-9">
-        <input class="form-control" placeholder="Date" type="text" name="attributes_{{name}}" id="{{name}}" value="{% if attribute.value %}{{attribute.value|date("Y-m-d")}}{% endif %}"/>
+        <input class="form-control" placeholder="Date" type="text" name="attributes_{{name}}" id="{{name}}" value="{% if attribute.value %}{{attribute.value|date("d-m-Y")}}{% endif %}"/>
     </div>
 </div>
 <script>
 $('input#{{name}}').datepicker({
-    dateFormat: "yy-mm-dd"
+    format: "dd-mm-yyyy"
 });
 </script>
