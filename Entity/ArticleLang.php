@@ -561,7 +561,6 @@ class ArticleLang{
      */
     public function addCategory(\Majes\BlogBundle\Entity\CategoryLang $category)
     {
-        \Doctrine\Common\Util\Debug::dump($category);
         return $this->categories[] = $category;
     }
 
@@ -581,13 +580,13 @@ class ArticleLang{
 
     public function removeCategory(\Majes\BlogBundle\Entity\CategoryLang $category)
     {
-        return $this->roles->removeElement($role);
+        return $this->categories->removeElement($category);
     }
 
     public function removeCategories()
     {
-        foreach($this->roles as $role)
-            $this->roles->removeElement($role);
+        foreach($this->categories as $category)
+            $this->categories->removeElement($category);
 
         return;
     }
