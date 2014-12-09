@@ -236,6 +236,8 @@ class AdminController extends Controller implements SystemController
             ->findOneById($id);
 
         $article->setDeleted(true);
+        $now = new \DateTime();
+        $article->setUrl($article->getUrl().'_deleted_'.$now->format('YmdHms'));
 
         $em->persist($article);
         $em->flush();
