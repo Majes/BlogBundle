@@ -60,7 +60,7 @@ class ArticleLangRepository extends EntityRepository {
             ->where('a.isActive = :isActive')
             ->andWhere('a.deleted = :deleted')
             ->andWhere('a.content LIKE :slug')
-            ->andWhere('a.title LIKE :slug')
+            ->orWhere('a.title LIKE :slug')
             ->setParameter('isActive', $isActive)
             ->setParameter('deleted', $deleted)
             ->setParameter('slug', '%'.$slug.'%')
