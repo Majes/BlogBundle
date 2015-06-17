@@ -112,7 +112,11 @@ class AdminController extends Controller implements SystemController
         $blog = $em->getRepository('MajesBlogBundle:Blog')
             ->findOneById($blog);
 
-        $article = $em->getRepository('MajesBlogBundle:Article')->findOneById($id);
+        $articleLang = $em->getRepository('MajesBlogBundle:ArticleLang')->findOneById($id);
+        
+        $article = null;
+        if(!is_null($articleLang))
+            $article = $articleLang->getArticle();
 
         if(is_null($article))
             $article = new Article();
