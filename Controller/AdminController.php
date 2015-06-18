@@ -157,7 +157,7 @@ class AdminController extends Controller implements SystemController
                 $formArticle = $this->createForm(new ArticleType($request->getSession(), $this->_lang), $article);
             }
 
-            $formArticleSocial = $this->createForm(new ArticleSocialType($request->getSession()), $article->getLang(), array('action' => $this->get('router')->generate('_blog_article_social_edit', array('blog' => $blog->getId(), 'id' => $article->getId()))))->createView();
+            $formArticleSocial = $this->createForm(new ArticleSocialType($request->getSession()), $article->getLang(), array('action' => $this->get('router')->generate('_blog_article_social_edit', array('blog' => $blog->getId(), 'id' => $articleLang->getId()))))->createView();
 
             $attributesSetted=$session->get('menu')['cms']['submenu']['blog']['attributes'];
 
@@ -192,12 +192,11 @@ class AdminController extends Controller implements SystemController
                     if(is_null($article->getLang()->getId()))
                         $article->getLang()->setArticle($article);
                 }
-                
 
                 $em->persist($article);
                 $em->flush();
 
-                return $this->redirect($this->generateUrl('_blog_article_edit', array('blog' => $blog->getId(), 'id' => $article->getId())));
+                return $this->redirect($this->generateUrl('_blog_article_edit', array('blog' => $blog->getId(), 'id' => $articleLang->getId())));
             }
         }
 
@@ -354,7 +353,7 @@ class AdminController extends Controller implements SystemController
                 $em->persist($articleLang);
                 $em->flush();
 
-                return $this->redirect($this->generateUrl('_blog_article_edit', array('blog' => $request->get('blog'), 'id' => $articleLang->getArticle()->getId())));
+                return $this->redirect($this->generateUrl('_blog_article_edit', array('blog' => $request->get('blog'), 'id' => $articleLang->getId())));
         }
     }
 
@@ -372,7 +371,11 @@ class AdminController extends Controller implements SystemController
         $blog = $em->getRepository('MajesBlogBundle:Blog')
             ->findOneById($blog);
 
-        $article = $em->getRepository('MajesBlogBundle:Article')->findOneById(array($id));
+        $articleLang = $em->getRepository('MajesBlogBundle:ArticleLang')->findOneById($id);
+        
+        $article = null;
+        if(!is_null($articleLang))
+            $article = $articleLang->getArticle();
 
         if(is_null($article))
             $article = new Article();
@@ -413,12 +416,12 @@ class AdminController extends Controller implements SystemController
                 $em->persist($articleLang);
                 $em->flush();
 
-                return $this->redirect($this->generateUrl('_blog_article_edit', array('blog' => $blog->getId(), 'id' => $article->getId())));
+                return $this->redirect($this->generateUrl('_blog_article_edit', array('blog' => $blog->getId(), 'id' => $articleLang->getId())));
             }
         }
 
 
-        return $this->redirect($this->generateUrl('_blog_article_edit', array('blog' => $blog->getId(), 'id' => $article->getId())));
+        return $this->redirect($this->generateUrl('_blog_article_edit', array('blog' => $blog->getId(), 'id' => $article->getLang()->getId())));
 
     }
 
