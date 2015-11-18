@@ -21,7 +21,7 @@
 {% block content_header '' %}
 
 {% block content %}
-    
+
 <div class="container-fluid main-content">
 
     {{ include(
@@ -33,14 +33,14 @@
     </div>
 
     <div class="row">
-        
+
         <!-- Site tree -->
         {% if blog is null %}{% set blog_id = null %}{% else %}{% set blog_id = blog.id %}{% endif %}
-        {{ render_esi(controller('MajesBlogBundle:Admin:menu', { 'id' : blog_id })) }}
-        
+        {{ render(controller('MajesBlogBundle:Admin:menu', { 'id' : blog_id })) }}
+
         <!-- Gallery with filtering and actions -->
         <div class="col-lg-9">
-            
+
             <div class="widget-container fluid-height clearfix">
                 {% if setup == 1 %}
                     {{ include('MajesBlogBundle:Admin:common/blogsetup.html.twig') }}
@@ -54,7 +54,7 @@
                 {% if edit_categ == 1 %}
                     {{ include('MajesBlogBundle:Admin:common/categorysetup.html.twig') }}
                 {% endif %}
-                
+
             </div>
         </div>
 
@@ -66,7 +66,7 @@
 <div class="modal fade" id="editModal" style="display: none;" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content" id="ajaxEditArticle">
-            
+
         </div>
     </div>
 </div>
@@ -75,10 +75,10 @@
 $(function() {
     $("a.editArticle").click(function(e){
             e.preventDefault();
-    
+
             var blog = $(event.target).data('blog');
             var article = $(event.target).data('article');
-    
+
             $.ajax({
                 url: $(this).attr('href'),
                 data: {blog: blog, article: article},
@@ -87,7 +87,7 @@ $(function() {
                     $('#editModal').modal('show');
                 }
             });
-            
+
         });
 
 });
