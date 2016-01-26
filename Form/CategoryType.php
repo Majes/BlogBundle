@@ -24,7 +24,7 @@ class CategoryType extends AbstractType
       ->add('lang', new CategoryLangType());
   }
 
-  public function setDefaultOptions(OptionsResolverInterface $resolver)
+  public function configureOptions(OptionsResolverInterface $resolver)
   {
     $resolver->setDefaults(array(
       'data_class' => 'Majes\BlogBundle\Entity\Category'

@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class ArticleType extends AbstractType
 {
   private $_locale;
-  
+
   public function __construct($session, $locale){
     $this->_locale=$locale;
   }
@@ -38,7 +38,7 @@ class ArticleType extends AbstractType
         ));
   }
 
-  public function setDefaultOptions(OptionsResolverInterface $resolver)
+  public function configureOptions(OptionsResolverInterface $resolver)
   {
     $resolver->setDefaults(array(
       'data_class' => 'Majes\BlogBundle\Entity\Article'

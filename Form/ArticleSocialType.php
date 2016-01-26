@@ -36,7 +36,7 @@ class ArticleSocialType extends AbstractType
         'mapped' => false));
   }
 
-  public function setDefaultOptions(OptionsResolverInterface $resolver)
+  public function configureOptions(OptionsResolverInterface $resolver)
   {
     $resolver->setDefaults(array(
       'data_class' => 'Majes\BlogBundle\Entity\ArticleLang'

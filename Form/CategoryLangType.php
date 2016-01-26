@@ -33,7 +33,7 @@ class CategoryLangType extends AbstractType
         'label' => 'is Active in this language'));
   }
 
-  public function setDefaultOptions(OptionsResolverInterface $resolver)
+  public function configureOptions(OptionsResolverInterface $resolver)
   {
     $resolver->setDefaults(array(
       'data_class' => 'Majes\BlogBundle\Entity\CategoryLang'

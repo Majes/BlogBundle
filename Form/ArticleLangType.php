@@ -17,7 +17,7 @@ class ArticleLangType extends AbstractType
     $builder->add('url', 'text', array(
             'required' => true,
             'label' => 'Url of your page'))
-      
+
       ->add('categories', 'entity', array(
         'required' => true,
         'multiple' => true,
@@ -40,7 +40,7 @@ class ArticleLangType extends AbstractType
         'label' => 'is Active in this language'));
   }
 
-  public function setDefaultOptions(OptionsResolverInterface $resolver)
+  public function configureOptions(OptionsResolverInterface $resolver)
   {
     $resolver->setDefaults(array(
       'data_class' => 'Majes\BlogBundle\Entity\ArticleLang'

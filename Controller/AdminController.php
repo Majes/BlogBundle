@@ -20,6 +20,7 @@ use Majes\BlogBundle\Entity\CategoryLang;
 use Majes\CmsBundle\Entity\Block;
 use Majes\MediaBundle\Entity\Media;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\HttpFoundation\Request;
 
 
 class AdminController extends Controller implements SystemController
@@ -29,7 +30,7 @@ class AdminController extends Controller implements SystemController
      *
      */
     public function contentAction()
-    {   
+    {
 
         return $this->render('MajesBlogBundle:Admin:content.html.twig', array(
             'pageTitle' =>'Blog Management',
@@ -53,9 +54,9 @@ class AdminController extends Controller implements SystemController
      *
      */
     public function contentListAction($blog)
-    {   
+    {
         $em = $this->getDoctrine()->getManager();
-        
+
         $articles = $em->getRepository('MajesBlogBundle:Article')->findBy(array('blog' => $blog));
 
         $filter = array();
@@ -68,7 +69,7 @@ class AdminController extends Controller implements SystemController
         }else{
             $articles=array();
         }
-        
+
 
         $blog = $em->getRepository('MajesBlogBundle:Blog')
             ->findOneById($blog);
@@ -100,10 +101,9 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_CONTENT,ROLE_SUPERADMIN")
      *
      */
-    public function articleEditAction($blog, $id)
-    { 
+    public function articleEditAction(Request $request, $blog, $id)
+    {
 
-        $request = $this->getRequest();
         $accessor = PropertyAccess::createPropertyAccessor();
         $em = $this->getDoctrine()->getManager();
 
@@ -113,7 +113,7 @@ class AdminController extends Controller implements SystemController
             ->findOneById($blog);
 
         $articleLang = $em->getRepository('MajesBlogBundle:ArticleLang')->findOneById($id);
-        
+
         $article = null;
         if(!is_null($articleLang))
             $article = $articleLang->getArticle();
@@ -173,7 +173,7 @@ class AdminController extends Controller implements SystemController
         }
 
         if($request->getMethod() == 'POST'){
-            
+
             $formArticle->handleRequest($request);
 
             if ($formArticle->isValid()) {
@@ -184,10 +184,10 @@ class AdminController extends Controller implements SystemController
                     $articleLang = $formArticle->get('lang')->getData();
                     $articleLang->setLocale($this->_lang);
                     $articleLang->setArticle($article);
-                    
+
                     $article->addLang($articleLang);
                 }else{
-                    
+
                     $article=$formArticle->getData();
                     if(is_null($article->getLang()->getId()))
                         $article->getLang()->setArticle($article);
@@ -225,9 +225,8 @@ class AdminController extends Controller implements SystemController
     /**
      * @Secure(roles="ROLE_CMS_CONTENT,ROLE_SUPERADMIN")
      */
-    public function articleDeleteAction($blog, $id){
+    public function articleDeleteAction(Request $request, $blog, $id){
 
-        $request = $this->getRequest();
 
         $em = $this->getDoctrine()->getManager();
 
@@ -251,17 +250,16 @@ class AdminController extends Controller implements SystemController
     /**
      * @Secure(roles="ROLE_CMS_CONTENT,ROLE_SUPERADMIN")
      */
-    public function articleContentFormAction(){
+    public function articleContentFormAction(Request $request){
 
-        $request = $this->getRequest();
         $accessor = PropertyAccess::createPropertyAccessor();
         $session = $this->get('session');
-        
+
         if($request->isXmlHttpRequest()){
 
             $blog = $request->get('blog');
             $article = $request->get('article');
-            
+
             $em = $this->getDoctrine()->getManager();
 
             $blog = $em->getRepository('MajesBlogBundle:Blog')
@@ -279,7 +277,7 @@ class AdminController extends Controller implements SystemController
                 $attribute = $em->getRepository('MajesCmsBundle:Attribute')->findOneById($value);
                 $attributes[$key] = array('attribute' => $attribute, 'value' => $accessor->getValue($article->getLang(), $key));
             }
-            
+
 
 
             return $this->render('MajesBlogBundle:Admin:parts/form-block.html.twig', array(
@@ -298,9 +296,8 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_CONTENT,ROLE_SUPERADMIN")
      *
      */
-    public function articleContentEditAction()
-    {   
-        $request = $this->getRequest();
+    public function articleContentEditAction(Request $request)
+    {
         $accessor = PropertyAccess::createPropertyAccessor();
         $em = $this->getDoctrine()->getManager();
         $session = $this->get('session');
@@ -308,17 +305,17 @@ class AdminController extends Controller implements SystemController
             $articleLang = $em->getRepository('MajesBlogBundle:ArticleLang')->findOneBy(array('id' => $request->get('id'), 'locale' => $request->get('lang')));
             $attributesSetted=$session->get('menu')['cms']['submenu']['blog']['attributes'];
             foreach ($attributesSetted as $key => $id) {
-                
+
                 switch($id){
                     case 2:
-                        
+
                         $metaImage = $request->get('attributes_'.$key);
                         $metaImage['value'] = $request->files->get('attributes_'.$key)['value'];
-                
+
                         if(isset($metaImage['remove'])){
                             $value = null;
                         }else if(!is_null($metaImage['value'])){
-                            
+
                             $media = new Media();
                             $media->setCreateDate(new \DateTime(date('Y-m-d H:i:s')));
                             $media->setUser($this->_user);
@@ -332,7 +329,7 @@ class AdminController extends Controller implements SystemController
                             $em->persist($media);
                             $em->flush();
                             $value = $media;
-                       
+
                         }else{
                             $value = $em->getRepository('MajesMediaBundle:Media')->findOneById($request->get('attributes_'.$key));
                         }
@@ -362,9 +359,8 @@ class AdminController extends Controller implements SystemController
      * @Secure(roles="ROLE_CMS_CONTENT,ROLE_SUPERADMIN")
      *
      */
-    public function articleSocialEditAction($blog, $id)
-    {   
-        $request = $this->getRequest();
+    public function articleSocialEditAction(Request $request, $blog, $id)
+    {
 
         $em = $this->getDoctrine()->getManager();
 
@@ -372,7 +368,7 @@ class AdminController extends Controller implements SystemController
             ->findOneById($blog);
 
         $articleLang = $em->getRepository('MajesBlogBundle:ArticleLang')->findOneById($id);
-        
+
         $article = null;
         if(!is_null($articleLang))
             $article = $articleLang->getArticle();
@@ -386,14 +382,14 @@ class AdminController extends Controller implements SystemController
 
         if($request->getMethod() == 'POST'){
             $formArticleSocial->handleRequest($request);
-            
+
             if ($formArticleSocial->isValid()) {
                 $metaImage = $formArticleSocial->get('metaImage')->getData();
-                
+
                 if(isset($metaImage['remove'])){
                     $metaImage = null;
                 }else if(!is_null($metaImage['value'])){
-                    
+
                     $media = new Media();
                     $media->setCreateDate(new \DateTime(date('Y-m-d H:i:s')));
                     $media->setUser($this->_user);
@@ -404,11 +400,11 @@ class AdminController extends Controller implements SystemController
                     $em->persist($media);
                     $em->flush();
                     $metaImage = $media;
-               
+
                 }else{
                     $metaImage = $em->getRepository('MajesMediaBundle:Media')->findOneById($metaImage['id']);
                 }
-                
+
                 $articleLang = $article->getLang();
                 $articleLang = $formArticleSocial->getData();
                 $articleLang->setMetaImage($metaImage);
@@ -428,9 +424,8 @@ class AdminController extends Controller implements SystemController
     /**
      * @Secure(roles="ROLE_CMS_CONTENT,ROLE_SUPERADMIN")
      */
-    public function categoryEditAction($blog, $id){
+    public function categoryEditAction(Request $request, $blog, $id){
 
-        $request = $this->getRequest();
         $accessor = PropertyAccess::createPropertyAccessor();
         $em = $this->getDoctrine()->getManager();
 
@@ -467,7 +462,7 @@ class AdminController extends Controller implements SystemController
             }elseif (is_null($category->getLang())) {
                 $new_lang = new CategoryLang();
                 $new_lang->setLocale($this->_lang);
-                
+
                 $category->addLang($new_lang);
 
                 $category->setLang($this->_lang);
@@ -476,7 +471,7 @@ class AdminController extends Controller implements SystemController
         }
 
         if($request->getMethod() == 'POST'){
-            
+
             $formCategory->handleRequest($request);
 
             if ($formCategory->isValid()) {
@@ -487,15 +482,15 @@ class AdminController extends Controller implements SystemController
                     $categoryLang = $formCategory->get('lang')->getData();
                     $categoryLang->setLocale($this->_lang);
                     $categoryLang->setCategory($category);
-                    
+
                     $category->addLang($categoryLang);
                 }else{
-                    
+
                     $category=$formCategory->getData();
                     if(is_null($category->getLang()->getId()))
                         $category->getLang()->setArticle($category);
                 }
-                
+
 
                 $em->persist($category);
                 $em->flush();
@@ -545,7 +540,7 @@ class AdminController extends Controller implements SystemController
         }else{
             $categories=array();
         }
-        
+
 
 
         $blog = $em->getRepository('MajesBlogBundle:Blog')
@@ -588,7 +583,7 @@ class AdminController extends Controller implements SystemController
         $menu = array();
 
         return $this->render('MajesBlogBundle:Admin:parts/tree.html.twig', array(
-            'blogs' => $blogs, 
+            'blogs' => $blogs,
             'url' => array(
                 'setup' => '_blog_setup',
                 'edit' => '_blog_content_edit',
@@ -599,9 +594,8 @@ class AdminController extends Controller implements SystemController
     /**
      * @Secure(roles="ROLE_CMS_CONTENT,ROLE_SUPERADMIN")
      */
-    public function setupAction($blog){
+    public function setupAction(Request $request, $blog){
 
-        $request = $this->getRequest();
 
         $em = $this->getDoctrine()->getManager();
 
