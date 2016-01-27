@@ -16,7 +16,7 @@ class BlogType extends AbstractType
       ->add('host', 'entity', array(
         'required' => true,
         'class' => 'MajesCoreBundle:Host',
-        'property' => 'url'))
+        'choice_label' => 'url'))
 
       ->add('templateIndex', 'entity', array(
         'required' => true,
@@ -25,7 +25,7 @@ class BlogType extends AbstractType
             return $er->createQueryBuilder('u')
                         ->where('u.deleted = 0');
         },
-        'property' => 'title'))
+        'choice_label' => 'title'))
 
       ->add('templateArticle', 'entity', array(
         'required' => true,
@@ -34,7 +34,7 @@ class BlogType extends AbstractType
             return $er->createQueryBuilder('u')
                         ->where('u.deleted = 0');
         },
-        'property' => 'title'))
+        'choice_label' => 'title'))
 
       ->add('enableComments', 'checkbox', array(
         'required' => false))

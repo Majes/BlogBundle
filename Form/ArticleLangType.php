@@ -29,7 +29,7 @@ class ArticleLangType extends AbstractType
                         ->andWhere('u.deleted = 0')
                         ->setParameter(0,$locale);
         },
-        'property' => 'name'))
+        'choice_label' => 'name'))
 
       ->add('enable_comments', 'checkbox', array(
         'required' => false,
